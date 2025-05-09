@@ -8,6 +8,8 @@ import org.junit.Assert;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AppointmentStepDefs {
     private String patientType;
@@ -16,6 +18,14 @@ public class AppointmentStepDefs {
     private LocalDateTime appointmentTime;
     private AppointmentManager appointmentManager;
     private String appointmentStatus;
+
+    // Mapping between English and Persian status values
+    private static final Map<String, String> statusMap = new HashMap<>();
+    static {
+        statusMap.put("confirmed", "تایید");
+        statusMap.put("canceled", "لغو");
+        // Add other mappings as needed
+    }
 
     @Given("the appointment system is ready")
     public void theAppointmentSystemIsReady() {
@@ -48,6 +58,10 @@ public class AppointmentStepDefs {
 
     @Then("the appointment status should be {string}")
     public void theAppointmentStatusShouldBe(String expectedStatus) {
+        // If the expected status is in English and has a Persian mapping, use that mapping
+        if (statusMap.containsKey(expectedStatus)) {
+            expectedStatus = statusMap.get(expectedStatus);
+        }
         Assert.assertEquals(expectedStatus, appointmentStatus);
     }
 }

@@ -18,7 +18,7 @@ public class AppointmentManager {
         }
 
         // Rule 2: Emergency Patient
-        if (EMERGENCY_PATIENT.equals(patientType)) {
+        if (EMERGENCY_PATIENT.equals(patientType) || "emergency".equalsIgnoreCase(patientType)) {
             // Emergency patient and doctor not available after appointment date
             if (appointmentTime.toLocalDate().isAfter(doctor.getAvailableUntil())) {
                 return CANCELED;
@@ -27,12 +27,13 @@ public class AppointmentManager {
         }
 
         // Rule 3: Regular Patient with Approved Insurance
-        if (REGULAR_PATIENT.equals(patientType) && APPROVED_INSURANCE.equals(insuranceStatus)) {
+        if ((REGULAR_PATIENT.equals(patientType) || "regular".equalsIgnoreCase(patientType)) &&
+                (APPROVED_INSURANCE.equals(insuranceStatus) || "approved".equalsIgnoreCase(insuranceStatus))) {
             return CONFIRMED;
         }
 
         // Rule 4: Rejected Insurance
-        if (REJECTED_INSURANCE.equals(insuranceStatus)) {
+        if (REJECTED_INSURANCE.equals(insuranceStatus) || "rejected".equalsIgnoreCase(insuranceStatus)) {
             return CANCELED;
         }
 
